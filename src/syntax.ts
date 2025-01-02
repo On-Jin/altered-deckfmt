@@ -1,4 +1,4 @@
-import { RefSetCode, RefFaction, RefRarity, CardId, CardRefQty, CardRefElements, RefProduct } from './models';
+import { RefSetCode, RefFaction, RefRarity, CardId, CardRefQty, CardRefElements, RefProduct, SetCodeIdBitLengthMap } from './models';
 import { BitstreamReader, BitstreamWriter } from './bitstream';
 
 export class EncodableCard {
@@ -28,7 +28,11 @@ export class EncodableCard {
     if (self.faction == 0) {
       throw new DecodingError(`Invalid faction ID (${self.faction})`)
     }
-    self.numberInFaction = reader.readSync(5)
+    const idBitLength = SetCodeIdBitLengthMap[self.setCode]
+    if (idBitLength == undefined) {
+      throw new DecodingError(`Invalid set code (${self.setCode})`)
+    }
+    self.numberInFaction = reader.readSync(idBitLength)
     self.rarity = reader.readSync(2)
     if (self.rarity == 3) {
       self.uniqueId = reader.readSync(16)
@@ -44,7 +48,11 @@ export class EncodableCard {
       writer.write(2, this.product)
     }
     writer.write(3, this.faction)
-    writer.write(5, this.numberInFaction)
+    const idBitLength = SetCodeIdBitLengthMap[this.setCode]
+    if (idBitLength == undefined) {
+      throw new EncodingError(`Invalid set code (${this.setCode})`)
+    }
+    writer.write(idBitLength, this.numberInFaction)
     writer.write(2, this.rarity)
     if (this.uniqueId !== undefined) {
       if (this.uniqueId > 0xFFFF) {
@@ -59,6 +67,7 @@ export class EncodableCard {
     switch (this.setCode) {
       case 1: id += RefSetCode.CoreKS; break;
       case 2: id += RefSetCode.Core; break;
+      case 3: id += RefSetCode.Alize; break;
     }
     id += "_"
     switch (this.product) {
@@ -260,7 +269,7 @@ export class EncodableDeck {
   }
 }
 
-class DecodingContext {
+export class DecodingContext {
   setCode?: number
 }
 

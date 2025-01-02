@@ -27,6 +27,13 @@ export enum RefSetCode {
   // 0 = invalid
   CoreKS = "COREKS", // 1
   Core = "CORE",     // 2
+  Alize = "ALIZE",   // 3
+}
+
+export const SetCodeIdBitLengthMap: Record<number, number> = {
+  1: 5, // CoreKS range 0-31
+  2: 5, // Core   range 0-31
+  3: 6, // Alize  range 0-63
 }
 
 export type CardId = string
@@ -93,7 +100,8 @@ export class CardRefElements {
     switch (this.set_code) {
       case RefSetCode.CoreKS: return 1;
       case RefSetCode.Core: return 2;
+      case RefSetCode.Alize: return 3;
     }
-    throw `Unrecognized SetCode ${this.rarity}`
+    throw `Unrecognized SetCode ${this.set_code}`
   }
 }

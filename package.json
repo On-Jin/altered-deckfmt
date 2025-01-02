@@ -18,7 +18,7 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "buffer": "feross/buffer#pull/314/head",
+    "buffer": "feross/buffer#pull/314/head"
   },
   "devDependencies": {
     "@types/node": "^22.5.0",
