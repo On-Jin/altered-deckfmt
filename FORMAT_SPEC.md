@@ -21,6 +21,8 @@ The deck binary string is made of, in order:
 
 The binary string will typically be encoded using Base64 encoding to be shared in a URL-safe format.
 
+This format allows for encoding cards IDs that do not actually exist in the game. For example `ALT_ALIZE_B_LY_07_C` does not exist since the `LY_07` family (_Hathor_) is not reprinted in _Trial by Frost_, but it can still be encoded by this format. Encoders and decoders do not need to check for this, it is expected that those edge cases will be handled by the applications using the format.
+
 ## Sub-elements
 
 Unless otherwise noted, all `int` fields represent **unsigned** integer values, i.e. a 3-bit field contains values from 0-7 inclusive, with `(bin)000 = (dec)0` and `(bin)111 = (dec)7`
@@ -51,6 +53,9 @@ The number of CardRefQuantity entities in this group
 [refs_count ** CardRefQuantity]
 contains the cards from this set, and their respective quantity in the deck
 ```
+
+It is valid to have multiple `SetGroup` elements with the same `set_code`, and decoders MUST support it. This is useful for encoding whole collections, which will often include more than 63 cards from the same set. Encoders SHOULD split a list of cards where more than 63 cards are from the same set into multiple `SetGroup` elements.
+
 
 ### CardRefQuantity
 
@@ -93,6 +98,9 @@ This maps directly to a card ID reference, which uses the text format
 
 Note that the set is implied from the parent `SetGroup` element.
 
+The length of the `number_in_faction` field varies depending on the set. The actual number of bits is specified in the Set section below.
+
+
 ```
 int(1) booster_product
 It's 1 if the Product is a booster (_B_), 0 otherwise. If 0, `product` MUST be present.
@@ -104,8 +112,8 @@ See Product in IDs section
 int(3) faction
 See Faction in IDs section
 
-int(5) number_in_faction
-Range 0 - 32 (for reference, core set uses range 1-30, and we expect intermediate sets to be smaller).
+int(variable-length) number_in_faction
+The length of this field depends on the set being decoded, as specified in the Set section below.
 
 int(2) rarity
 See Rarity in IDs section
@@ -115,7 +123,7 @@ This MUST be present if and only if rarity == unique (int value 3)
 Range 1 - 65535
 ```
 
-Note that the `booster_product` field is a single bit which works best for the bast majority of cards, which will be acquired through regular means (set boosters or precons).
+Note that the `booster_product` field is a single bit which works best for the vast majority of cards, which will be acquired through regular means (set boosters or precons).
 If the card is a promo or altered art:
 * Set the `booster_product` field to `0`.
 * Use the `product` field to indicate what type of product it is according to the Product section.
@@ -131,7 +139,19 @@ This section contains the list of IDs that map with there respective plain text 
 ```
 1 = COREKS
 2 = CORE
+3 = ALIZE (Trial by Frost)
 ```
+
+#### number_in_faction bitlength by set
+
+Use the following table to determine the number of bits to use for the `number_in_faction` field:
+
+| Set | Number of bits |
+| --- | -------------- |
+| `COREKS`, `CORE` | 5 |
+| `ALIZE` | 6 |
+
+_Rationale_: The "number in faction" of each card family is sequential from the start of the game. This allows reprints to use the same card family numbers (in other words, a `(faction, number in faction)` tuple uniquely identifies a card family). The consequence is that as each new set is released, the maximum value of the `number_in_faction` field increases. Using a variable number of bits allows us to represent any card in a set – regardless of future reprints – with minimal effort from the encoder/decoders, while still using a reasonably compact encoding.
 
 ### Product
 

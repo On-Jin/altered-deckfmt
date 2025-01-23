@@ -86,8 +86,8 @@ export class EncodableCard {
       case 7: id += RefFaction.Neutral; break;
     }
     id += "_"
-    if (this.numberInFaction < 10 && this.faction != 7) {
-      // Fun fact: Neutral card (Mana Orb) does not use 0 prefix
+    if (this.numberInFaction < 10 && !(this.faction == 7 && this.numberInFaction == 1)) {
+      // Fun fact: CORE_NE_1 card (Mana Orb) does not use 0 prefix
       id += "0"
     }
     id += this.numberInFaction
