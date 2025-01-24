@@ -36,7 +36,7 @@ export declare class EncodableDeck {
     static fromList(refQtyList: Array<CardRefQty>): EncodableDeck;
     private static groupedBySet;
 }
-declare class DecodingContext {
+export declare class DecodingContext {
     setCode?: number;
 }
 export declare class DecodingError extends Error {
@@ -45,4 +45,3 @@ export declare class DecodingError extends Error {
 export declare class EncodingError extends Error {
     constructor(message: string);
 }
-export {};

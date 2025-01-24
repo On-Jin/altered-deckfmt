@@ -20,8 +20,10 @@ export declare enum RefRarity {
 }
 export declare enum RefSetCode {
     CoreKS = "COREKS",// 1
-    Core = "CORE"
+    Core = "CORE",// 2
+    Alize = "ALIZE"
 }
+export declare const SetCodeIdBitLengthMap: Record<number, number>;
 export type CardId = string;
 export interface CardRefQty {
     quantity: number;

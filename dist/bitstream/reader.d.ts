@@ -135,7 +135,7 @@ export declare class BitstreamReader {
      * @param offset The offset into the buffer to write to. Defaults to zero
      * @param length The length of bytes to read. Defaults to the length of the array (sans the offset)
      */
-    readBytesBlocking(buffer: Uint8Array, offset?: number, length?: number): Promise<Uint8Array>;
+    readBytesBlocking(buffer: Uint8Array, offset?: number, length?: number): Promise<Uint8Array<ArrayBufferLike>>;
     /**
      * Read a two's complement signed integer of the given bit length synchronously. If there are not
      * enough bits available, an error is thrown.
@@ -195,6 +195,7 @@ export declare class BitstreamReader {
      * @returns A promise which resolves to the signed integer value once it is read
      */
     readSigned(length: number): Promise<number>;
+    private promise;
     private block;
     /**
      * Read an IEEE 754 floating point value with the given bit length, waiting until enough bits are
