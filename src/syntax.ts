@@ -86,8 +86,9 @@ export class EncodableCard {
       case 7: id += RefFaction.Neutral; break;
     }
     id += "_"
-    if (this.numberInFaction < 10 && !(this.faction == 7 && this.numberInFaction == 1)) {
-      // Fun fact: CORE_NE_1 card (Mana Orb) does not use 0 prefix
+    if (this.numberInFaction < 10 && !(this.faction == 7 && (this.setCode == 1 || this.setCode == 2))) {
+      // Fun fact: NE_1 (Mana Convergence) does not use 0 prefix on Core/CoreKS.
+      // This was likely an error and is fixed in Alize.
       id += "0"
     }
     id += this.numberInFaction

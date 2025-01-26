@@ -27,7 +27,7 @@ const expectedEncoded = {
   "test/decklists/test_products.txt": "EBAg04RrTJLU",
   "test/decklists/test_alize_1.txt": "EBAw3bR21djwTSA",
   "test/decklists/test_alize_2.txt": "ECAwm4xsMAgmxn04",
-  "test/decklists/test_alize_neutrals.txt": "ECAgXwgGC-EA",
+  "test/decklists/test_alize_neutrals.txt": "ECAgXwgGE-CPhAA",
   "test/decklists/list_1offs.txt": "ECAU2RjKFlBScpaUlWVLJFkwysZc0wLFzMh2NTYZw0-GfIEXS4ZWtOmYNMRmyzgp6N-mcjOU",
   "test/decklists/list_2sets.txt": "ECAjGhnSHpR0s6gdRaqPWRrRVp64deQESnV0UqcdPA", 
   "test/decklists/list_uniques.txt": "EBAVnBjhHww4lcSeILFNjDx5S-so2TPLDRcOHGX4iUOcWt1XazI5t8wW8g",
