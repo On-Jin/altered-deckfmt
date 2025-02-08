@@ -10,9 +10,15 @@ export default async function fromUrl(url) {
     process.exit(1)
   }
 
-  const response = await fetch(`https://api.altered.gg/deck_user_lists/${deckId}`)
-  const json = await response.json()
-  // console.log(json)
+  let json;
+  try {
+    const response = await fetch(`https://api.altered.gg/deck_user_lists/${deckId}`)
+    json = await response.json()
+    // console.log(json)
+  } catch (e) {
+    console.error("Failed to fetch deck data from API")
+    process.exit(1)
+  }
 
   const hero = json.alterator.reference
   const cards = Object.values(json.deckCardsByType)
@@ -32,5 +38,6 @@ export default async function fromUrl(url) {
     .map(([card, qty]) => `${qty} ${card}`)
     .join("\n")
   const encoded = deckfmt.encodeList(text);
-  console.log(encoded)
+  console.log(encoded);
+  process.exit(0);
 }
