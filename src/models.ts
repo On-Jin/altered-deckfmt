@@ -35,7 +35,7 @@ export const SetCodeIdBitLengthMap: Record<number, number> = {
   1: 5, // CoreKS range 0-31
   2: 5, // Core   range 0-31
   3: 6, // Alize  range 0-63
-  4: 6, // Bise  range 0-63
+  4: 6, // Bise   range 0-63
 }
 
 export type CardId = string
@@ -103,7 +103,7 @@ export class CardRefElements {
       case RefSetCode.CoreKS: return 1;
       case RefSetCode.Core: return 2;
       case RefSetCode.Alize: return 3;
-	  case RefSetCode.Bise: return 4;
+      case RefSetCode.Bise: return 4;
     }
     throw `Unrecognized SetCode ${this.set_code}`
   }

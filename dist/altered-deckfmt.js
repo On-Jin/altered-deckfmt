@@ -10,7 +10,7 @@ const _e = {
   3: 6,
   // Alize  range 0-63
   4: 6
-  // Bise  range 0-63
+  // Bise   range 0-63
 };
 class Fe {
   constructor(i) {
