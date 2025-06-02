@@ -26,6 +26,7 @@ export declare class EncodableSetGroup {
     static decode(reader: BitstreamReader, context: DecodingContext): EncodableSetGroup;
     encode(writer: BitstreamWriter): void;
     static from(rqs: CardRefQty[]): EncodableSetGroup;
+    static isValidSetCode(setCode: number): boolean;
 }
 export declare class EncodableDeck {
     version: number;
