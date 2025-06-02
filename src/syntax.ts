@@ -30,7 +30,7 @@ export class EncodableCard {
     }
     const idBitLength = SetCodeIdBitLengthMap[self.setCode]
     if (idBitLength == undefined) {
-      throw new DecodingError(`Invalid set code (${self.setCode})`)
+      throw new DecodingError(`Invalid set code (${self.setCode}) @${reader.offset}`)
     }
     self.numberInFaction = reader.readSync(idBitLength)
     self.rarity = reader.readSync(2)
@@ -172,8 +172,8 @@ export class EncodableSetGroup {
   static decode(reader: BitstreamReader, context: DecodingContext): EncodableSetGroup {
     const self = new EncodableSetGroup()
     self.setCode = reader.readSync(8)
-    if (self.setCode == 0) {
-      throw new DecodingError(`Invalid SetCode ID (${self.setCode})`)
+    if (!EncodableSetGroup.isValidSetCode(self.setCode)) {
+      throw new DecodingError(`Invalid SetCode ID (${self.setCode}) @offset=${reader.offset}`)
     }
     context.setCode = self.setCode
 
@@ -204,6 +204,10 @@ export class EncodableSetGroup {
     let esg = new EncodableSetGroup()
     esg.cardQty = rqs.map((rq) => EncodableCardQty.from(rq.quantity, rq.id))
     return esg
+  }
+
+  static isValidSetCode(setCode: number): boolean {
+    return SetCodeIdBitLengthMap[setCode] !== undefined;
   }
 }
 
@@ -249,10 +253,14 @@ export class EncodableDeck {
 
   static fromList(refQtyList: Array<CardRefQty>): EncodableDeck {
     const groups = EncodableDeck.groupedBySet(refQtyList)
-      .map((g) => EncodableSetGroup.from(g))
+      .map((g) => {
+        const blocks = arraySplitInGroupsOf(g, 63)
+        return blocks.map((block) => EncodableSetGroup.from(block))
+      })
     let deck = new EncodableDeck()
+    console.log("Groups: ", groups.map((g) => `len=${g.length} ${g.map(h => h.cardQty.length).join(",")}`).join(" ; "))
     deck.version = 1
-    deck.setGroups = groups
+    deck.setGroups = groups.flat()
     return deck
   }
 
@@ -270,6 +278,16 @@ export class EncodableDeck {
     return Array.from(groups, ([_, v]) => v)
   }
 }
+
+
+function arraySplitInGroupsOf<T>(array: Array<T>, maxGroupSize: number): Array<Array<T>> {
+  let out: Array<Array<T>> = []
+  for (let i = 0 ; i < array.length ; i += maxGroupSize) {
+    out.push(array.slice(i, i + maxGroupSize))
+  }
+  return out;
+}
+
 
 export class DecodingContext {
   setCode?: number
