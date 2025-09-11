@@ -22,7 +22,11 @@ export declare enum RefSetCode {
     CoreKS = "COREKS",// 1
     Core = "CORE",// 2
     Alize = "ALIZE",// 3
-    Bise = "BISE"
+    Bise = "BISE",// 4
+    TumultS3 = "TCS3",// 5
+    WCQualifier25 = "WCQ25",// 6
+    WCSeries25 = "WCS25",// 7
+    Cyclone = "CYCLONE"
 }
 export declare const SetCodeIdBitLengthMap: Record<number, number>;
 export type CardId = string;
