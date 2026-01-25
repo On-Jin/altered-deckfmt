@@ -1,10 +1,11 @@
 {
   "name": "altered-deckfmt",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "A compact format for storing Altered TCG decklists",
   "type": "module",
   "files": [
-    "dist", "cli"
+    "dist",
+    "cli"
   ],
   "main": "./dist/altered-deckfmt.umd.cjs",
   "types": "./dist/index.d.ts",
@@ -17,9 +18,11 @@
     "test": "vitest run",
     "test:watch": "vitest watch"
   },
-  "bin": "cli/index.js",
+  "bin": {
+    "altered-deckfmt": "cli/index.js"
+  },
   "dependencies": {
-    "buffer": "feross/buffer#pull/314/head",
+    "buffer": "github:feross/buffer#pull/314/head",
     "yargs": "^17.7.2"
   },
   "devDependencies": {

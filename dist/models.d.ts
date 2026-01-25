@@ -16,7 +16,8 @@ export declare enum RefRarity {
     Common = "C",// 0
     Rare = "R1",// 1
     RareOOF = "R2",// 2
-    Unique = "U"
+    Unique = "U",// 3
+    Exalt = "E"
 }
 export declare enum RefSetCode {
     CoreKS = "COREKS",// 1
@@ -26,9 +27,14 @@ export declare enum RefSetCode {
     TumultS3 = "TCS3",// 5
     WCQualifier25 = "WCQ25",// 6
     WCSeries25 = "WCS25",// 7
-    Cyclone = "CYCLONE"
+    Cyclone = "CYCLONE",// 8
+    Duster = "DUSTER",// 9
+    DusterTOP = "DUSTERTOP",// 10
+    DusterCB = "DUSTERCB",// 11
+    DusterOP = "DUSTEROP"
 }
 export declare const SetCodeIdBitLengthMap: Record<number, number>;
+export declare const SetCodeIdWithLegacyRarityLength: number[];
 export type CardId = string;
 export interface CardRefQty {
     quantity: number;
