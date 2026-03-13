@@ -82,7 +82,7 @@ export class CardRefElements {
   uniq_num?: number
 
   constructor(id: CardId) {
-    const match = id.match(/^ALT_(\w+)_(A|B|P)_(\w{2})_(\d{1,2})_(C|R1|R2|U|E)(?:_(\d+))?$/)
+    const match = id.match(/^ALT_(\w+)_(A|B|P)_(\w{2})_(\d+)_(C|R1|R2|U|E)(?:_(\d+))?$/)
     if (!match) { throw "unrecognized card id '" + id + "'" }
 
     this.set_code = (match[1] as RefSetCode)

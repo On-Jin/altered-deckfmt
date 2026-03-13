@@ -53,7 +53,7 @@ class Ce {
     w(this, "num_in_faction");
     w(this, "rarity");
     w(this, "uniq_num");
-    const s = i.match(/^ALT_(\w+)_(A|B|P)_(\w{2})_(\d{1,2})_(C|R1|R2|U|E)(?:_(\d+))?$/);
+    const s = i.match(/^ALT_(\w+)_(A|B|P)_(\w{2})_(\d+)_(C|R1|R2|U|E)(?:_(\d+))?$/);
     if (!s)
       throw "unrecognized card id '" + i + "'";
     if (this.set_code = s[1], this.product = s[2], this.faction = s[3], this.num_in_faction = parseInt(s[4], 10), this.rarity = s[5], this.uniq_num = s[6] ? parseInt(s[6]) : void 0, this.rarity == "U" && this.uniq_num == null)
@@ -308,7 +308,7 @@ class H {
     return f.quantity = i, f.card = j.fromId(s), f;
   }
 }
-class Q {
+class z {
   constructor() {
     w(this, "setCode");
     // 8 bits
@@ -316,8 +316,8 @@ class Q {
   }
   // count: 6 bits
   static decode(i, s) {
-    const f = new Q();
-    if (f.setCode = i.readSync(8), !Q.isValidSetCode(f.setCode))
+    const f = new z();
+    if (f.setCode = i.readSync(8), !z.isValidSetCode(f.setCode))
       throw new W(`Invalid SetCode ID (${f.setCode}) @offset=${i.offset}`);
     s.setCode = f.setCode;
     const c = i.readSync(6), a = new Array();
@@ -334,14 +334,14 @@ class Q {
       f.encode(i);
   }
   static from(i) {
-    let s = new Q();
+    let s = new z();
     return s.cardQty = i.map((f) => H.from(f.quantity, f.id)), s;
   }
   static isValidSetCode(i) {
     return se[i] !== void 0;
   }
 }
-class z {
+class Q {
   constructor() {
     w(this, "version");
     // 4 bits
@@ -349,12 +349,12 @@ class z {
   }
   // count: 8 bits
   static decode(i) {
-    const s = new z(), f = new tt();
+    const s = new Q(), f = new tt();
     if (s.version = i.readSync(4), s.version !== 1)
       throw new W(`Invalid version (${s.version}`);
     const c = i.readSync(8), a = new Array();
     for (let p = 0; p < c; p++)
-      a.push(Q.decode(i, f));
+      a.push(z.decode(i, f));
     return s.setGroups = a, s;
   }
   encode(i) {
@@ -370,9 +370,9 @@ class z {
     return this.setGroups.reduce((i, s) => i.concat(s.cardQty.map((f) => f.asCardRefQty)), Array());
   }
   static fromList(i) {
-    const s = z.groupedBySet(i).map((c) => et(c, 63).map((p) => Q.from(p)));
-    let f = new z();
-    return console.log("Groups: ", s.map((c) => `len=${c.length} ${c.map((a) => a.cardQty.length).join(",")}`).join(" ; ")), f.version = 1, f.setGroups = s.flat(), f;
+    const s = Q.groupedBySet(i).map((c) => et(c, 63).map((p) => z.from(p)));
+    let f = new Q();
+    return f.version = 1, f.setGroups = s.flat(), f;
   }
   static groupedBySet(i) {
     let s = /* @__PURE__ */ new Map();
@@ -1282,7 +1282,7 @@ oe.write = function(l, i, s, f, c, a) {
       e = `_${r.slice(t - 3, t)}${e}`;
     return `${r.slice(0, t)}${e}`;
   }
-  function Qe(r, e, t) {
+  function ze(r, e, t) {
     D(e, "offset"), (r[e] === void 0 || r[e + t] === void 0) && Y(e, r.length - (t + 1));
   }
   function ge(r, e, t, n, o, h) {
@@ -1291,7 +1291,7 @@ oe.write = function(l, i, s, f, c, a) {
       let B;
       throw e === 0 || e === BigInt(0) ? B = `>= 0${d} and < 2${d} ** ${(h + 1) * 8}${d}` : B = `>= -(2${d} ** ${(h + 1) * 8 - 1}${d}) and < 2 ** ${(h + 1) * 8 - 1}${d}`, new q.ERR_OUT_OF_RANGE("value", B, r);
     }
-    Qe(n, o, h);
+    ze(n, o, h);
   }
   function D(r, e) {
     if (typeof r != "number")
@@ -1304,7 +1304,7 @@ oe.write = function(l, i, s, f, c, a) {
       r
     );
   }
-  const ze = /[^+/0-9A-Za-z-_]/g, be = "+", Ie = "/", xe = "-", me = "_";
+  const Qe = /[^+/0-9A-Za-z-_]/g, be = "+", Ie = "/", xe = "-", me = "_";
   function Ye(r) {
     return r.replaceAll(xe, be).replaceAll(me, Ie);
   }
@@ -1312,7 +1312,7 @@ oe.write = function(l, i, s, f, c, a) {
     return r.replaceAll(be, xe).replaceAll(Ie, me);
   }
   function He(r) {
-    if (r = r.split("=")[0], r = r.trim().replace(ze, ""), r.length < 2) return "";
+    if (r = r.split("=")[0], r = r.trim().replace(Qe, ""), r.length < 2) return "";
     for (; r.length % 4 !== 0; )
       r = r + "=";
     return r;
@@ -2110,12 +2110,12 @@ function pt(l) {
     const y = p.trim().match(/^(\d+) (\w+)$/);
     return y && parseInt(y[1], 10) > 0 ? [{ quantity: parseInt(y[1], 10), id: y[2] }] : [];
   }), f = new at(), c = new ct(f, 1024);
-  return z.fromList(s).encode(c), c.end(), J.Buffer.concat([f.buffer]).toString("base64url");
+  return Q.fromList(s).encode(c), c.end(), J.Buffer.concat([f.buffer]).toString("base64url");
 }
 function yt(l) {
   const i = J.Buffer.from(l, "base64url");
   let s = new lt();
-  return s.addBuffer(i), z.decode(s).asCardRefQty.map((a) => `${a.quantity} ${a.id}`).join(`
+  return s.addBuffer(i), Q.decode(s).asCardRefQty.map((a) => `${a.quantity} ${a.id}`).join(`
 `);
 }
 export {

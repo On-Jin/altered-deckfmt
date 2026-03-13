@@ -278,7 +278,6 @@ export class EncodableDeck {
         return blocks.map((block) => EncodableSetGroup.from(block))
       })
     let deck = new EncodableDeck()
-    console.log("Groups: ", groups.map((g) => `len=${g.length} ${g.map(h => h.cardQty.length).join(",")}`).join(" ; "))
     deck.version = 1
     deck.setGroups = groups.flat()
     return deck
