@@ -149,6 +149,12 @@ This section contains the list of IDs that map with there respective plain text 
 10 = DUSTERTOP (Seeds of Unity - Box Topper)
 11 = DUSTERCB (Seeds of Unity - Collector Booster)
 12 = DUSTEROP (Seeds of Unity - Organized Play)
+13 = EOLE (Roots of Corruption)
+14 = EOLECB (Roots of Corruption - Collector Booster)
+15 = JUDGE
+16 = MUSUBI
+17 = WCF25 (World Championship Finals 2025)
+18 = WCS26 (World Championship Series 2026)
 ```
 
 #### number_in_faction bitlength by set
@@ -157,17 +163,23 @@ Use the following table to determine the number of bits to use for the `number_i
 
 | Set | Number of bits | Notes |
 | --- | -------------- | --- |
-| `COREKS`, `CORE` | 5 |
+| `COREKS`, `CORE` | 6 |
 | `ALIZE` | 6 |
-| `BISE` | 6 |
+| `BISE` | 7 |
 | `TCS3` | 6 |
 | `WCQ25` | 5 | It only has cards from the `CORE` set
 | `WCS25` | 5 | It only has cards from the `CORE` set
 | `CYCLONE` | 7 |
 | `DUSTER` | 7 |
-| `DUSTERTOP` | 5 | It only has cards from the `CORE` set
+| `DUSTERTOP` | 6 | It only has cards from the `CORE` set
 | `DUSTERCB` | 7 |
 | `DUSTEROP` | 7 |
+| `EOLE` | 7 |
+| `EOLECB` | 7 |
+| `JUDGE` | 5 |
+| `MUSUBI` | 7 |
+| `WCF25` | 5 |
+| `WCS26` | 7 |
 
 _Rationale_: The "number in faction" of each card family is sequential from the start of the game. This allows reprints to use the same card family numbers (in other words, a `(faction, number in faction)` tuple uniquely identifies a card family). The consequence is that as each new set is released, the maximum value of the `number_in_faction` field increases. Using a variable number of bits allows us to represent any card in a set – regardless of future reprints – with minimal effort from the encoder/decoders, while still using a reasonably compact encoding.
 
@@ -206,9 +218,15 @@ _Rationale_: The "number in faction" of each card family is sequential from the 
 | `WCS25` | 2 |
 | `CYCLONE` | 2 |
 | `DUSTER` | 3 |
-| `DUSTERTOP` | 2 | It only has cards from the `CORE` set
+| `DUSTERTOP` | 3 | It only has cards from the `CORE` set
 | `DUSTERCB` | 3 |
-| `DUSTEROP` | 2 | It doesn't have Exalt cards
+| `DUSTEROP` | 3 | It doesn't have Exalt cards
+| `EOLE` | 3 |
+| `EOLECB` | 3 |
+| `JUDGE` | 3 |
+| `MUSUBI` | 3 |
+| `WCF25` | 3 |
+| `WCS26` | 3 |
 
 _Rationale_: The original number of codes for rarities (C, R1, R2, U) allowed to encode rarity using 2 bits. However, starting with Seeds of Unity, new sets may contain a new rarity (E). This doesn't seem to apply to all new sets. That said, it could be simplified by simply using 3 bits for all sets since Seeds of Unity (DUSTER).
 
